@@ -82,7 +82,7 @@ class Link extends Component{
         )
     }
 }
-/*
+
 class Repo extends Component{
     constructor(props){
         super(props);
@@ -91,10 +91,11 @@ class Repo extends Component{
         }
     }
     handleClick(input){
+        //Need to check if the repo name is valid!
         const repolist = this.state.repos.slice();
         repolist.push(input);
         this.setState({
-            repos: repolistq
+            repos: repolist,
         });
 
     }
@@ -103,36 +104,18 @@ class Repo extends Component{
                 <div className="repo">
                 <h5>Generate a link to get stars for your repos:</h5>
                 <div className="input-group repo-input">
-                <input id="repo-userinput" type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2"/>
+                <input id="repo-userinput" type="text" class="form-control" placeholder="ex. Organization / RepoName" aria-label="Recipient's username" aria-describedby="button-addon2"/>
                 <div className="input-group-append">
                 <button className="btn btn-secondary" type="button" id="button-addon2" onClick={()=>this.handleClick(document.getElementById('repo-userinput').value)}>Add Star Wanted Repo</button>
                 </div>
                 </div>
                 <div className="added-repo">
                 <ul>
-                <li><i className="fas fa-times"></i> <img src={repoicon}/> yukims19 / OneProfile</li>
-                </ul>
-
-                </div>
-                </div>
-        )
-    }
-}
-*/
-class Repo extends Component{
-    render(){
-        return(
-                <div className="repo">
-                <h5>Generate a link to get stars for your repos:</h5>
-                <div className="input-group repo-input">
-                <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2"/>
-                <div className="input-group-append">
-                <button className="btn btn-secondary" type="button" id="button-addon2">Add Star Wanted Repo</button>
-                </div>
-                </div>
-                <div className="added-repo">
-                <ul>
-                <li><i className="fas fa-times"></i> <img src={repoicon}/> yukims19 / OneProfile</li>
+                {this.state.repos.map((e)=>{
+                    return(
+                            <li><i className="fas fa-times"></i> <img src={repoicon}/> {e}</li>
+                    )
+                })}
                 </ul>
 
                 </div>
