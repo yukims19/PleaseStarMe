@@ -17,7 +17,7 @@ const APP_ID = '0e79f79d-6a0a-4413-b311-5d9c8db1b5c7';
 const client = new OneGraphApolloClient({
     oneGraphAuth: auth,
 });
-var githubUser = null;
+
 const GET_GithubQuery = gql`
 query {
   me {
@@ -40,8 +40,6 @@ class GithubInfo extends Component{
                     if (error) {
                         console.log(error);
                         return <div>Uh oh, something went wrong!</div>};
-                    githubUser = idx(data, _ => _.me.github.login);
-                    console.log(githubUser);
                     return (
                         <div>
                             <div className="header">
@@ -64,6 +62,17 @@ class GithubInfo extends Component{
 }
 
 class Link extends Component{
+    handleClickCopy(){
+        var copyText = document.getElementById("url-params");
+        var copyText2 = document.getElementById("basic-url");
+        /* Select the text field */
+        copyText.select();
+        //copyText2.select();
+
+        /* Copy the text inside the text field */
+        document.execCommand("copy");
+
+    }
     render(){
         var repos="";
         if(this.props.repos){
@@ -75,11 +84,12 @@ class Link extends Component{
                 <div className="link">
                 <div className="input-group mb-3">
                 <div className="input-group-prepend">
-                <span className="input-group-text" id="basic-addon3">https://pleasestarme.com/?githubUser={this.props.user}&repos=</span>
+                {/*<span className="input-group-text" id="basic-url">https://pleasestarme.com/?githubUser={this.props.user}&repos=</span>*/}
+
                 </div>
-                <input type="text" className="form-control" id="basic-url" aria-describedby="basic-addon3" value={repos}/>
+                <input type="text" className="form-control" id="url-params" aria-describedby="basic-addon3" value={"https://pleasestarme.com/?githubUser="+this.props.user+"&repos="+repos}/>
                 <div className="input-group-append">
-                <button className="btn btn-primary" type="button" id="button-addon2">Copy Link to Share</button>
+                <button className="btn btn-primary" type="button" id="button-addon2" onClick={()=>this.handleClickCopy()}>Copy Link to Share</button>
                 </div>
                 </div>
 
@@ -95,15 +105,29 @@ class Repo extends Component{
             repos: [],
         }
     }
-    handleClick(input){
+    handleClickAdd(input){
         //Need to check if the repo name is valid!
+        if(input.match(/[a-zA-Z]/)){
         const repolist = this.state.repos.slice();
         repolist.push(input);
         this.setState({
             repos: repolist,
         });
-        document.getElementById('repo-userinput').value = "";
+            document.getElementById('repo-userinput').value = "";
+        }else{
+            alert("Invalid input");
+        }
 
+    }
+    handleClickDelete(e){
+        const repolist = this.state.repos.slice();
+        var index = repolist.indexOf(e);
+        var list1 = repolist.slice(0,index);
+        var list2 = repolist.slice(index+1, repolist.length);
+        var list = list1.concat(list2);
+        this.setState({
+            repos: list,
+        });
     }
     render(){
         return(
@@ -113,14 +137,14 @@ class Repo extends Component{
                 <div className="input-group repo-input">
                 <input id="repo-userinput" type="text" className="form-control" placeholder="ex. Organization / RepoName" aria-label="Recipient's username" aria-describedby="button-addon2"/>
                 <div className="input-group-append">
-                <button className="btn btn-secondary" type="button" id="button-addon2" onClick={()=>this.handleClick(document.getElementById('repo-userinput').value)}>Add Star Wanted Repo</button>
+                <button className="btn btn-secondary" type="button" id="button-addon2" onClick={()=>this.handleClickAdd(document.getElementById('repo-userinput').value)}>Add Star Wanted Repo</button>
                 </div>
                 </div>
                 <div className="added-repo">
                 <ul>
                 {this.state.repos.map((e)=>{
                     return(
-                            <li><i className="fas fa-times"></i> <img src={repoicon}/> {e}</li>
+                            <li><i className="fas fa-times" onClick={()=>this.handleClickDelete(e)}></i> <img src={repoicon}/> {e}</li>
                     )
                 })}
                 </ul>
