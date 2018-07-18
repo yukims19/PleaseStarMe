@@ -102,6 +102,7 @@ class Repo extends Component{
         this.setState({
             repos: repolist,
         });
+        document.getElementById('repo-userinput').value = "";
 
     }
     render(){
