@@ -28,6 +28,9 @@ const GET_GithubQuery = gql`
         login
         name
         id
+        location
+        websiteUrl
+        email
       }
     }
   }
@@ -46,17 +49,21 @@ class GithubInfo extends Component {
           return (
             <div>
               <div className="header">
-                <img src={idx(data, _ => _.me.github.avatarUrl)} />
-                <div className="username">
-                  {idx(data, _ => _.me.github.login)} <br />
-                  <span>{idx(data, _ => _.me.github.company)}</span>
-                </div>
-                {
-                  //<i className="fas fa-chevron-down"></i>
-                }
+                <h1>
+                  <i class="fas fa-star" /> PleaseStarMe - Share Your GitHub
+                  Love!
+                </h1>
               </div>
               <div className="container">
-                <Repo user={idx(data, _ => _.me.github.login)} />
+                <Repo
+                  login={idx(data, _ => _.me.github.login)}
+                  avatarUrl={idx(data, _ => _.me.github.avatarUrl)}
+                  company={idx(data, _ => _.me.github.company)}
+                  location={idx(data, _ => _.me.github.location)}
+                  email={idx(data, _ => _.me.github.email)}
+                  websiteUrl={idx(data, _ => _.me.github.websiteUrl)}
+                  name={idx(data, _ => _.me.github.name)}
+                />
               </div>
             </div>
           );
@@ -69,7 +76,6 @@ class GithubInfo extends Component {
 class Link extends Component {
   handleClickCopy() {
     var copyText = document.getElementById("url-params");
-    var copyText2 = document.getElementById("basic-url");
     // Select the text field
     copyText.select();
     //copyText2.select();
@@ -86,30 +92,26 @@ class Link extends Component {
     }
     return (
       <div className="link">
-        <div className="input-group mb-3">
-          <div className="input-group-prepend">
-            <span className="input-group-text" id="basic-url">
-              https://pleasestarme.com/?githubUser={this.props.user}&repos=
-            </span>
-          </div>
-          <input
-            type="text"
-            className="form-control"
-            id="url-params"
-            aria-describedby="basic-addon3"
-            value={repos}
-          />
-          <div className="input-group-append">
-            <button
-              className="btn btn-primary"
-              type="button"
-              id="button-addon2"
-              onClick={() => this.handleClickCopy()}
-            >
-              Copy Link to Share
-            </button>
-          </div>
-        </div>
+        <input
+          type="text"
+          className="form-control"
+          id="url-params"
+          value={
+            "https://pleasestarme.com/?githubUser=" +
+            this.props.user +
+            "&repos=" +
+            repos
+          }
+          readOnly
+        />
+        <button
+          className="btn btn-primary"
+          type="button"
+          id="button-addon2"
+          onClick={() => this.handleClickCopy()}
+        >
+          Copy Link to Share
+        </button>
       </div>
     );
   }
@@ -148,8 +150,6 @@ class Repo extends Component {
   render() {
     return (
       <div className="repo">
-        <Link repos={this.state.repos} user={this.props.user} />
-        <h5>Generate a link to get stars for your repos:</h5>
         <div className="input-group repo-input">
           <input
             id="repo-userinput"
@@ -173,20 +173,45 @@ class Repo extends Component {
             </button>
           </div>
         </div>
-        <div className="added-repo">
-          <ul>
-            {this.state.repos.map(e => {
-              return (
-                <li key={e}>
-                  <i
-                    className="fas fa-times"
-                    onClick={() => this.handleClickDelete(e)}
-                  />{" "}
-                  <img src={repoicon} /> {e}
-                </li>
-              );
-            })}
-          </ul>
+
+        <div className="container repo-data">
+          <div className="row">
+            <div className="col-md-6 userinfo">
+              <img src={this.props.avatarUrl} />
+              <div className="username">
+                {this.props.login} <br />
+                <span>{this.props.company} </span>
+              </div>
+              <br />
+              <small>
+                <cite title={this.props.location}>
+                  {this.props.location} <i className="fas fa-map-marker-alt" />
+                </cite>
+              </small>
+              <p className="info-list">
+                <i className="fas fa-envelope" /> {this.props.email}
+                <br />
+                <i className="fas fa-globe" />{" "}
+                <a href={this.props.websiteUrl}>{this.props.websiteUrl}</a>
+              </p>
+              <Link repos={this.state.repos} user={this.props.login} />
+            </div>
+            <div className="col-md-6 added-repo">
+              <ul>
+                {this.state.repos.map(e => {
+                  return (
+                    <li key={e}>
+                      <i
+                        className="fas fa-times"
+                        onClick={() => this.handleClickDelete(e)}
+                      />{" "}
+                      <img src={repoicon} /> {e}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -273,6 +298,9 @@ class AppGetStar extends Component {
     return (
       <div className="App">
         {content}
+        <div class="card-footer text-muted">
+          Made with <i className="fas fa-heart" /> By Youxi Li on OneGraph
+        </div>
       </div>
     );
   }

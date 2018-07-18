@@ -1,35 +1,22 @@
 .App {
   text-align: center;
-  width: 90%;
-  margin: auto;
 }
-.login-content {
-  margin-top: 70px;
-}
-
 .header {
-  margin: 20px 50px 70px 0px;
-  text-align: right;
+  border: 1px solid;
 }
-.header img,
-.header div {
-  display: inline-block;
+.header h1 {
+  padding: 20px;
 }
-.header img {
-  width: 60px;
-  border-radius: 50%;
+.header h1 i {
+  color: yellow;
 }
-.header .username {
-  margin: 0px 5px 0px 5px;
-  text-align: left;
-  height: 40px;
-  position: relative;
-  top: 10px;
-  line-height: normal;
+.card-footer {
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
 }
-.header .username span {
-  color: #7c7c7c;
-  font-size: 0.8rem;
+.card-footer i {
+  color: red;
 }
 .link .btn {
   background-color: #40b9ed;
@@ -38,17 +25,33 @@
 .link .btn:hover {
   background-color: #03a9f4;
 }
-h5 {
-  margin-top: 70px;
+.link input {
+  //display: none;
 }
+
 .repo {
   text-align: left;
   margin: auto;
+  margin-top: 50px;
+  margin-bottom: 80px;
   width: 85%;
 }
-.repo-input {
+.repo-input,
+.repo-data {
   width: 70%;
   margin: auto;
+}
+.repo-data {
+  margin-top: 30px;
+}
+.repo .userinfo img,
+.repo .userinfo .username {
+  display: inline-block;
+}
+.repo .userinfo img {
+  width: 60px;
+  border-radius: 50%;
+  margin-right: 10px;
 }
 .added-repo {
   margin: auto;
@@ -59,6 +62,7 @@ h5 {
 .added-repo ul {
   list-style-type: none;
   font-size: 1.3rem;
+  padding: 0px;
 }
 .added-repo img {
   height: 14px;
