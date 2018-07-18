@@ -1,82 +1,100 @@
 .App {
   text-align: center;
+  width: 90%;
+  margin: auto;
 }
-.login-content{
-    margin-top: 70px;
-}
-
-.header{
-    margin: 20px 50px 70px 0px;
-    text-align: right;
-}
-.header img, .header div{
-    display: inline-block;
-}
-.header img{
-    width: 60px;
-    border-radius: 50%;
-}
-.header .username{
-    margin: 0px 5px 0px 5px;
-    text-align: left;
-    height: 40px;
-    position: relative;
-    top: 10px;
-    line-height: normal;
-}
-.header .username span{
-    color: #7c7c7c;
-    font-size: 0.8rem;
-}
-.link{
-
-}
-.repo{
-    margin-top: 50px;
-    text-align: left;
-}
-.repo-input{
-    width: 70%;
-    margin: auto;
-}
-.added-repo{
-    margin: auto;
-    margin-top: 10px;
-    width: 400px;
-    text-align: left;
-}
-.added-repo ul{
-    list-style-type: none;
-    font-size: 1.3rem;
-}
-.added-repo img{
-    height: 14px;
-    margin-left: 20px;
-}
-.added-repo i:hover{
-    cursor: pointer;
-}
-#button-addon2{
-    //background-color: #40B9ED;
+.login-content {
+  margin-top: 70px;
 }
 
+.header {
+  margin: 20px 50px 70px 0px;
+  text-align: right;
+}
+.header img,
+.header div {
+  display: inline-block;
+}
+.header img {
+  width: 60px;
+  border-radius: 50%;
+}
+.header .username {
+  margin: 0px 5px 0px 5px;
+  text-align: left;
+  height: 40px;
+  position: relative;
+  top: 10px;
+  line-height: normal;
+}
+.header .username span {
+  color: #7c7c7c;
+  font-size: 0.8rem;
+}
+.link .btn {
+  background-color: #40b9ed;
+  border-color: #40b9ed;
+}
+.link .btn:hover {
+  background-color: #03a9f4;
+}
+h5 {
+  margin-top: 70px;
+}
+.repo {
+  text-align: left;
+  margin: auto;
+  width: 85%;
+}
+.repo-input {
+  width: 70%;
+  margin: auto;
+}
+.added-repo {
+  margin: auto;
+  margin-top: 10px;
+  width: 400px;
+  text-align: left;
+}
+.added-repo ul {
+  list-style-type: none;
+  font-size: 1.3rem;
+}
+.added-repo img {
+  height: 14px;
+  margin-left: 20px;
+}
+.added-repo i:hover {
+  cursor: pointer;
+}
+#button-addon2 {
+  //background-color: #40B9ED;
+}
+
+.github-userinfo .col-md-2 img {
+  width: 100%;
+  border-radius: 5px;
+}
+.github-userinfo .user-info {
+  text-align: left;
+}
 /*Buttons*/
-.loginbtn{
-    border-radius: 3px;
-    box-shadow: rgba(0, 0, 0, 0.5) 0px 1px 2px;
-    color: rgb(255, 255, 255);
-    cursor: pointer;
-    font-size: 19px;
-    margin: 5px;
-    overflow: hidden;
-    padding: 0px 10px;
-    user-select: none;
-    height: 50px;
-    margin-top: 20px;
+.loginbtn {
+  border-radius: 3px;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 1px 2px;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  font-size: 19px;
+  margin: 5px;
+  overflow: hidden;
+  padding: 0px 10px;
+  user-select: none;
+  height: 50px;
+  margin-top: 20px;
 }
-.loginbtn-github{
-    background: rgb(51, 51, 51);
+.loginbtn-github {
+  background: rgb(51, 51, 51);
 }
-.loginbtn-github:hover{
-    background: rgb(85, 85, 85);
+.loginbtn-github:hover {
+  background: rgb(85, 85, 85);
 }
