@@ -140,16 +140,84 @@ class Repo extends Component{
     }
 }
 
+class LoginButton extends Component{
+    render(){
+        return(
+                <button
+            className={"loginbtn loginbtn-"+ this.props.eventClass}
+            onClick={this.props.onClick}>
+                <i className={"fab fa-"+this.props.eventClass}></i>
+                <span>  </span>Login with {this.props.event}
+            </button>
+        )
+    }
+
+}
+
 class App extends Component {
-  render() {
+    constructor(props){
+        super(props);
+        this.state = {
+            github: false,
+        };
+        this.isLoggedIn('github');
+    }
+    isLoggedIn(event){
+        auth.isLoggedIn(event).then(isLoggedIn => {
+            this.setState({
+                [event]: isLoggedIn
+            })
+        });
+    }
+    handleClick(service){
+        try {
+            auth.login(service).then(() => {
+                auth.isLoggedIn(service).then(isLoggedIn => {
+                    if (isLoggedIn) {
+                        console.log('Successfully logged in to ' + service);
+                        this.setState({
+                            [service]: isLoggedIn
+                        });
+                    } else {
+                        console.log('Did not grant auth for service ' + service);
+                        this.setState({
+                            service: isLoggedIn
+                        });
+                    }
+                });
+            });
+        } catch (e) {
+            console.error('Problem logging in', e);
+        }
+    }
+    renderLogin(eventTitle, eventClass){
+        return(
+                <div className="login-content">
+                <h1>Welcome to PleaseStarMe</h1>
+                <h4>Let's get starts for your repos</h4>
+                <LoginButton
+            event= {eventTitle}
+            eventClass= {eventClass}
+            onClick={()=>this.handleClick(eventClass)} />
+                </div>
+        );
+    }
+    render() {
+        var content;
+        if(this.state.github){
+            content =<div>
+                <ApolloProvider client={client}><GithubInfo /></ApolloProvider>
+                <div className="container">
+                <Link />
+                <Repo />
+                </div>
+                </div>;
+        }else{
+            content = this.renderLogin("GitHub", "github");
+        }
     return (
             <div className="App">
-            <ApolloProvider client={client}><GithubInfo /></ApolloProvider>;
-
-            <div className="container">
-            <Link />
-            <Repo />
-            </div>
+            {content}
       </div>
     );
   }

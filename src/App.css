@@ -1,6 +1,10 @@
 .App {
   text-align: center;
 }
+.login-content{
+    margin-top: 70px;
+}
+
 .header{
     margin: 20px 50px 70px 0px;
     text-align: right;
@@ -38,4 +42,25 @@
 }
 #button-addon2{
     //background-color: #40B9ED;
+}
+
+/*Buttons*/
+.loginbtn{
+    border-radius: 3px;
+    box-shadow: rgba(0, 0, 0, 0.5) 0px 1px 2px;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    font-size: 19px;
+    margin: 5px;
+    overflow: hidden;
+    padding: 0px 10px;
+    user-select: none;
+    height: 50px;
+    margin-top: 20px;
+}
+.loginbtn-github{
+    background: rgb(51, 51, 51);
+}
+.loginbtn-github:hover{
+    background: rgb(85, 85, 85);
 }
