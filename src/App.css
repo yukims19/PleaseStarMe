@@ -1,0 +1,41 @@
+.App {
+  text-align: center;
+}
+.header{
+    margin: 20px 50px 70px 0px;
+    text-align: right;
+}
+.header img, .header div{
+    display: inline-block;
+}
+.link{
+
+}
+.repo{
+    margin-top: 50px;
+    text-align: left;
+}
+.repo-input{
+    width: 70%;
+    margin: auto;
+}
+.added-repo{
+    margin: auto;
+    margin-top: 10px;
+    width: 400px;
+    text-align: left;
+}
+.added-repo ul{
+    list-style-type: none;
+    font-size: 1.3rem;
+}
+.added-repo img{
+    height: 14px;
+    margin-left: 20px;
+}
+.added-repo i:hover{
+    cursor: pointer;
+}
+#button-addon2{
+    //background-color: #40B9ED;
+}
