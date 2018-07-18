@@ -17,23 +17,16 @@ const APP_ID = '0e79f79d-6a0a-4413-b311-5d9c8db1b5c7';
 const client = new OneGraphApolloClient({
     oneGraphAuth: auth,
 });
-
+var githubUser = null;
 const GET_GithubQuery = gql`
-query($github: String!) {
-  gitHub {
-    user(login: $github) {
-      id
+query {
+  me {
+    github {
       avatarUrl
-      url
-      login
       company
+      login
       name
-      followers {
-        totalCount
-      }
-      following {
-        totalCount
-      }
+      id
     }
   }
 }
@@ -41,22 +34,28 @@ query($github: String!) {
 class GithubInfo extends Component{
     render(){
         return(
-                <Query query={GET_GithubQuery}  variables = {{github: "sgrove"}}>
+                <Query query={GET_GithubQuery}>
                 {({loading, error, data}) => {
                     if (loading) return <div>Loading...</div>;
                     if (error) {
                         console.log(error);
                         return <div>Uh oh, something went wrong!</div>};
+                    githubUser = idx(data, _ => _.me.github.login);
+                    console.log(githubUser);
                     return (
+                        <div>
                             <div className="header">
-                            <img src={idx(data, _ => _.gitHub.user.avatarUrl)} />
+                            <img src={idx(data, _ => _.me.github.avatarUrl)} />
                             <div className="username">
-                            {idx(data, _ => _.gitHub.user.name)} <br/>
-                            <span>{idx(data, _ => _.gitHub.user.company)}</span>
+                            {idx(data, _ => _.me.github.login)} <br/>
+                            <span>{idx(data, _ => _.me.github.company)}</span>
                             </div>
                             {/*<i className="fas fa-chevron-down"></i>*/}
+                        </div>
+                            <div className="container">
+                            <Repo user={idx(data, _ => _.me.github.login)}/>
                             </div>
-
+                            </div>
                     )
                 }}
                 </Query>
@@ -66,13 +65,19 @@ class GithubInfo extends Component{
 
 class Link extends Component{
     render(){
+        var repos="";
+        if(this.props.repos){
+            this.props.repos.forEach((e)=>{
+                repos = repos+e+"+";
+            })
+        }
         return(
                 <div className="link">
                 <div className="input-group mb-3">
                 <div className="input-group-prepend">
-                <span className="input-group-text" id="basic-addon3">https://pleasestarme.com/?query=</span>
+                <span className="input-group-text" id="basic-addon3">https://pleasestarme.com/?githubUser={this.props.user}&repos=</span>
                 </div>
-                <input type="text" className="form-control" id="basic-url" aria-describedby="basic-addon3" />
+                <input type="text" className="form-control" id="basic-url" aria-describedby="basic-addon3" value={repos}/>
                 <div className="input-group-append">
                 <button className="btn btn-primary" type="button" id="button-addon2">Copy Link to Share</button>
                 </div>
@@ -102,9 +107,10 @@ class Repo extends Component{
     render(){
         return(
                 <div className="repo">
+                <Link repos={this.state.repos} user={this.props.user}/>
                 <h5>Generate a link to get stars for your repos:</h5>
                 <div className="input-group repo-input">
-                <input id="repo-userinput" type="text" class="form-control" placeholder="ex. Organization / RepoName" aria-label="Recipient's username" aria-describedby="button-addon2"/>
+                <input id="repo-userinput" type="text" className="form-control" placeholder="ex. Organization / RepoName" aria-label="Recipient's username" aria-describedby="button-addon2"/>
                 <div className="input-group-append">
                 <button className="btn btn-secondary" type="button" id="button-addon2" onClick={()=>this.handleClick(document.getElementById('repo-userinput').value)}>Add Star Wanted Repo</button>
                 </div>
@@ -143,6 +149,7 @@ class App extends Component {
         super(props);
         this.state = {
             github: false,
+            githubUser: null,
         };
         this.isLoggedIn('github');
     }
@@ -191,10 +198,6 @@ class App extends Component {
         if(this.state.github){
             content =<div>
                 <ApolloProvider client={client}><GithubInfo /></ApolloProvider>
-                <div className="container">
-                <Link />
-                <Repo />
-                </div>
                 </div>;
         }else{
             content = this.renderLogin("GitHub", "github");
