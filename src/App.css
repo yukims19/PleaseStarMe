@@ -12,6 +12,22 @@
 .header img, .header div{
     display: inline-block;
 }
+.header img{
+    width: 60px;
+    border-radius: 50%;
+}
+.header .username{
+    margin: 0px 5px 0px 5px;
+    text-align: left;
+    height: 40px;
+    position: relative;
+    top: 10px;
+    line-height: normal;
+}
+.header .username span{
+    color: #7c7c7c;
+    font-size: 0.8rem;
+}
 .link{
 
 }

@@ -51,9 +51,10 @@ class GithubInfo extends Component{
                             <div className="header">
                             <img src={idx(data, _ => _.gitHub.user.avatarUrl)} />
                             <div className="username">
-                            {idx(data, _ => _.gitHub.user.name)} <br/>@{idx(data, _ => _.gitHub.user.company)}
-                        </div>
-                            <i className="fas fa-chevron-down"></i>
+                            {idx(data, _ => _.gitHub.user.name)} <br/>
+                            <span>{idx(data, _ => _.gitHub.user.company)}</span>
+                            </div>
+                            {/*<i className="fas fa-chevron-down"></i>*/}
                             </div>
 
                     )
