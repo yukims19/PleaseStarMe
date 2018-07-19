@@ -26,9 +26,13 @@
   background-color: #03a9f4;
 }
 .link input {
-  //display: none;
+  border: none;
+  height: 0px;
+  padding: 0px;
 }
-
+.link input:focus {
+  box-shadow: none;
+}
 .repo {
   text-align: left;
   margin: auto;
