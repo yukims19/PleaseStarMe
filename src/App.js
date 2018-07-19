@@ -225,6 +225,109 @@ class LoginButton extends Component {
     );
   }
 }
+const GET_GithubQueryUser = gql`
+  query($github: String!) {
+    gitHub {
+      user(login: $github) {
+        id
+        avatarUrl
+        url
+        login
+        name
+        location
+        company
+        email
+        websiteUrl
+        bio
+        followers {
+          totalCount
+        }
+        following {
+          totalCount
+        }
+        repositories(
+          first: 6
+          orderBy: { direction: DESC, field: UPDATED_AT }
+        ) {
+          nodes {
+            id
+            description
+            url
+            name
+            forks {
+              totalCount
+            }
+            stargazers {
+              totalCount
+            }
+            languages(first: 1, orderBy: { field: SIZE, direction: DESC }) {
+              edges {
+                size
+                node {
+                  id
+                  color
+                  name
+                }
+              }
+            }
+          }
+          totalCount
+        }
+      }
+    }
+  }
+`;
+class GithubInfoUser extends Component {
+  render() {
+    return (
+      <Query query={GET_GithubQueryUser} variables={{ github: "sgrove" }}>
+        {({ loading, error, data }) => {
+          if (loading) return <div>Loading...</div>;
+          if (error) {
+            console.log(error);
+            return <div>Uh oh, something went wrong!</div>;
+          }
+          if (!idx(data, _ => _.gitHub.user)) return <div>No Data Found</div>;
+          return (
+            <div className="github-userinfo">
+              <a
+                href={idx(data, _ => _.gitHub.user.url)}
+                className="user-image"
+              >
+                {" "}<img src={idx(data, _ => _.gitHub.user.avatarUrl)} />
+              </a>
+              <div className="user-detail">
+                <h4>
+                  <a href={idx(data, _ => _.gitHub.user.url)}>
+                    {idx(data, _ => _.gitHub.user.login)}
+                  </a>{" "}
+                  ({idx(data, _ => _.gitHub.user.name)})
+                </h4>
+                <small>
+                  <cite title={this.props.location}>
+                    {idx(data, _ => _.gitHub.user.location)}{" "}
+                    <i className="fas fa-map-marker-alt" />
+                  </cite>
+                </small>
+                <br />
+                {idx(data, _ => _.gitHub.user.bio)}
+                <p className="info-list">
+                  <i className="fas fa-envelope" />{" "}
+                  {idx(data, _ => _.gitHub.user.email)}
+                  <br />
+                  <i className="fas fa-globe" />{" "}
+                  <a href={idx(data, _ => _.gitHub.user.websiteUrl)}>
+                    {idx(data, _ => _.gitHub.user.websiteUrl)}
+                  </a>
+                </p>
+              </div>
+            </div>
+          );
+        }}
+      </Query>
+    );
+  }
+}
 
 class AppGetStar extends Component {
   constructor(props) {
@@ -278,13 +381,50 @@ class AppGetStar extends Component {
   render() {
     var content;
     if (this.state.github) {
-      content = (
-        <div>
-          <ApolloProvider client={client}>
-            <GithubInfo />
-          </ApolloProvider>
-        </div>
-      );
+      if (URL.includes("?")) {
+        content = (
+          <div>
+            <ApolloProvider client={client}>
+              <GithubInfoUser />
+            </ApolloProvider>
+            <div className="added-repo">
+              <p>Sean wants your GitHub love on the repos:</p>
+              <ul>
+                <li>
+                  <i className="far fa-star" /> <img src={repoicon} />yukims19 /
+                  OneProfile
+                </li>
+                <li>
+                  <i className="far fa-star" /> <img src={repoicon} />yukims19 /
+                  OneProfile
+                </li>
+                <li>
+                  <i className="far fa-star" /> <img src={repoicon} />yukims19 /
+                  OneProfile
+                </li>
+                <li>
+                  <i className="far fa-star" /> <img src={repoicon} />yukims19 /
+                  OneProfile
+                </li>
+
+                {/*this.state.repos.map((e)=>{
+                            return(
+                            <li><i className="fas fa-times" onClick={()=>this.handleClickDelete(e)}></i> <img src={repoicon}/> {e}</li>
+                            )
+                          })*/}
+              </ul>
+            </div>
+          </div>
+        );
+      } else {
+        content = (
+          <div>
+            <ApolloProvider client={client}>
+              <GithubInfo />
+            </ApolloProvider>
+          </div>
+        );
+      }
     } else {
       content = this.renderLogin("GitHub", "github");
     }
