@@ -3,9 +3,12 @@
 }
 .header {
   border: 1px solid;
+  background-image: url("./img/header-background.jpg");
+  background-size: cover;
 }
 .header h1 {
   padding: 20px;
+  color: white;
 }
 .header h1 i {
   color: yellow;
