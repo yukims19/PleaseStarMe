@@ -21,6 +21,9 @@
 .card-footer i {
   color: red;
 }
+.login-content {
+  margin-top: 50px;
+}
 .link .btn {
   background-color: #40b9ed;
   border-color: #40b9ed;

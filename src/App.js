@@ -48,12 +48,6 @@ class GithubInfo extends Component {
           }
           return (
             <div>
-              <div className="header">
-                <h1>
-                  <i class="fas fa-star" /> PleaseStarMe - Share Your GitHub
-                  Love!
-                </h1>
-              </div>
               <div className="container">
                 <Repo
                   login={idx(data, _ => _.me.github.login)}
@@ -272,8 +266,7 @@ class AppGetStar extends Component {
   renderLogin(eventTitle, eventClass) {
     return (
       <div className="login-content">
-        <h1>Welcome to PleaseStarMe</h1>
-        <h4>Let's get starts for your repos</h4>
+        <h4>Let's get starts for your repos!</h4>
         <LoginButton
           event={eventTitle}
           eventClass={eventClass}
@@ -297,6 +290,11 @@ class AppGetStar extends Component {
     }
     return (
       <div className="App">
+        <div className="header">
+          <h1>
+            <i class="fas fa-star" /> PleaseStarMe - Share Your GitHub Love!
+          </h1>
+        </div>
         {content}
         <div class="card-footer text-muted">
           Made with <i className="fas fa-heart" /> By Youxi Li on OneGraph
