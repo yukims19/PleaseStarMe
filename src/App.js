@@ -6,6 +6,7 @@ import OneGraphAuth from "onegraph-auth";
 import { gql } from "apollo-boost";
 import { ApolloProvider, Query } from "react-apollo";
 import idx from "idx";
+import Autosuggest from "react-autosuggest";
 
 const auth = new OneGraphAuth({
   appId: "0e79f79d-6a0a-4413-b311-5d9c8db1b5c7",
@@ -18,6 +19,84 @@ const client = new OneGraphApolloClient({
 });
 
 const URL = window.location.href; //http://localhost:3000/?githubUser=yuki19&repos=yukims19/OneProfile;
+
+let userrepos = [];
+
+const getSuggestions = value => {
+  const inputValue = value.trim().toLowerCase();
+  const inputLength = inputValue.length;
+  return inputLength === 0
+    ? ["none"]
+    : userrepos.filter(
+        repo => repo.toLowerCase().slice(0, inputLength) === inputValue
+      );
+};
+
+// When suggestion is clicked, Autosuggest needs to populate the input
+// based on the clicked suggestion. Teach Autosuggest how to calculate the
+// input value for every given suggestion.
+const getSuggestionValue = suggestion => suggestion;
+
+// Use your imagination to render suggestions.
+const renderSuggestion = suggestion =>
+  <div>
+    {suggestion}
+  </div>;
+
+class RepoInput extends Component {
+  constructor() {
+    super();
+    this.state = {
+      value: "",
+      suggestions: []
+    };
+  }
+
+  onChange = (event, { newValue }) => {
+    this.setState({
+      value: newValue
+    });
+  };
+
+  // Autosuggest will call this function every time you need to update suggestions.
+  // You already implemented this logic above, so just use it.
+  onSuggestionsFetchRequested = ({ value }) => {
+    this.setState({
+      suggestions: getSuggestions(value)
+    });
+  };
+
+  // Autosuggest will call this function every time you need to clear suggestions.
+  onSuggestionsClearRequested = () => {
+    this.setState({
+      suggestions: []
+    });
+  };
+
+  render() {
+    const { value, suggestions } = this.state;
+
+    // Autosuggest will pass through all these props to the input.
+    const inputProps = {
+      placeholder: "ex. Organization/RepoName",
+      value,
+      onChange: this.onChange,
+      id: "repo-userinput"
+    };
+
+    // Finally, render it!
+    return (
+      <Autosuggest
+        suggestions={suggestions}
+        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+        getSuggestionValue={getSuggestionValue}
+        renderSuggestion={renderSuggestion}
+        inputProps={inputProps}
+      />
+    );
+  }
+}
 
 const GET_GithubQuery = gql`
   query {
@@ -59,6 +138,52 @@ class GithubInfo extends Component {
                   name={idx(data, _ => _.me.github.name)}
                 />
               </div>
+            </div>
+          );
+        }}
+      </Query>
+    );
+  }
+}
+const GET_MyGithubRepos = gql`
+  query($login: String!) {
+    gitHub {
+      user(login: $login) {
+        repositories(first: 100) {
+          nodes {
+            id
+            description
+            nameWithOwner
+          }
+        }
+      }
+    }
+  }
+`;
+
+class MyGithubRepos extends Component {
+  render() {
+    return (
+      <Query query={GET_MyGithubRepos} variables={{ login: this.props.login }}>
+        {({ loading, error, data }) => {
+          if (loading) return <div>Loading...</div>;
+          if (error) {
+            console.log(error);
+            return <div>Uh oh, something went wrong!</div>;
+          }
+          if (idx(data, _ => _.gitHub.user.repositories.nodes)) {
+            userrepos = data.gitHub.user.repositories.nodes.map(e => {
+              return e.nameWithOwner;
+            });
+            console.log(
+              data.gitHub.user.repositories.nodes.map(e => {
+                return e.nameWithOwner;
+              })
+            );
+          }
+          return (
+            <div className="autoInput">
+              <RepoInput />
             </div>
           );
         }}
@@ -126,7 +251,9 @@ class Repo extends Component {
       this.setState({
         repos: repolist
       });
-      document.getElementById("repo-userinput").value = "";
+      /*TODO !!Reset Not Working*/
+      //document.getElementsByClassName("react-autosuggest__input").value = " ";
+      //document.getElementById("repo-userinput").value = " ";
     } else {
       alert("Invalid input");
     }
@@ -145,14 +272,8 @@ class Repo extends Component {
     return (
       <div className="repo">
         <div className="input-group repo-input">
-          <input
-            id="repo-userinput"
-            type="text"
-            className="form-control"
-            placeholder="ex. Organization / RepoName"
-            aria-label="Recipient's username"
-            aria-describedby="button-addon2"
-          />
+          <MyGithubRepos login={this.props.login} />
+
           <div className="input-group-append">
             <button
               className="btn btn-secondary"
@@ -167,7 +288,6 @@ class Repo extends Component {
             </button>
           </div>
         </div>
-
         <div className="container repo-data">
           <div className="row">
             <div className="col-md-6 userinfo">
