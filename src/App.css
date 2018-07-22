@@ -79,6 +79,12 @@
   padding: 0px;
   white-space: nowrap;
 }
+.added-repo i {
+  color: #e2e2e2;
+}
+.added-repo .active {
+  color: yellow;
+}
 .added-repo img {
   height: 14px;
   margin-left: 20px;
