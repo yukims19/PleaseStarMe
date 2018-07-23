@@ -104,12 +104,14 @@
 .github-userinfo {
   margin-top: 50px;
 }
+.github-userinfo a.user-image {
+  top: -55px;
+  position: relative;
+}
 .github-userinfo img {
   width: 120px;
   border-radius: 5px;
   margin-right: 10px;
-  top: -55px;
-  position: relative;
 }
 .github-userinfo .user-detail,
 .github-userinfo .user-image {
