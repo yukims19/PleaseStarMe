@@ -465,14 +465,14 @@ class RepoId extends Component {
           if (error) {
             console.log(error);
             return (
-              <div>
+              <div className="star-data">
                 <i className="fas fa-exclamation-triangle" /> Could not find
                 repo "{this.props.repoOwner}/{this.props.repoName}"
               </div>
             );
           }
           return (
-            <div>
+            <div className="star-data">
               <input
                 id={this.props.repoName}
                 type="hidden"

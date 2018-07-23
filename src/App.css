@@ -5,6 +5,7 @@
   border: 1px solid;
   background-image: url("./img/header-background.jpg");
   background-size: cover;
+  width: 100%;
 }
 .header h1 {
   padding: 20px;
@@ -17,6 +18,7 @@
   position: fixed;
   bottom: 0px;
   width: 100%;
+  background-color: #f7f7f7;
 }
 .card-footer i {
   color: red;
@@ -70,6 +72,7 @@
 .added-repo {
   margin: auto;
   margin-top: 10px;
+  margin-bottom: 80px;
   width: 400px;
   text-align: left;
 }
@@ -81,6 +84,12 @@
 }
 .added-repo i {
   color: #e2e2e2;
+}
+.added-repo .fa-exclamation-triangle {
+  color: #ffe125;
+}
+.added-repo .fa-exclamation-triangle:hover {
+  cursor: auto;
 }
 .added-repo .active {
   color: yellow;
@@ -203,4 +212,42 @@
 
 .react-autosuggest__suggestion--highlighted {
   background-color: #ddd;
+}
+
+@media screen and (max-width: 768px) {
+  .header h1 {
+    font-size: 1.8rem;
+  }
+  .repo {
+    width: 100%;
+  }
+  .repo-input {
+    width: 320px;
+  }
+  .autoInput {
+    width: 280px;
+  }
+  .input-group-append #button-addon2 {
+    width: 40px;
+    padding-left: 7px;
+    overflow: hidden;
+  }
+  .repo-data {
+    width: 100%;
+  }
+  .added-repo {
+    width: 100%;
+  }
+  .added-repo p {
+    padding: 5px;
+    text-align: center;
+  }
+  .added-repo ul {
+    white-space: normal;
+    font-size: 1rem;
+  }
+  .star-data {
+    padding: 10px;
+    margin-left: 30px;
+  }
 }
