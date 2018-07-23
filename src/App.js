@@ -4,7 +4,7 @@ import "./App.css";
 import OneGraphApolloClient from "onegraph-apollo-client";
 import OneGraphAuth from "onegraph-auth";
 import { gql } from "apollo-boost";
-import { ApolloProvider, Query, Mutation, graphql } from "react-apollo";
+import { ApolloProvider, Query, Mutation } from "react-apollo";
 import idx from "idx";
 import Autosuggest from "react-autosuggest";
 
@@ -198,11 +198,6 @@ class MyGithubRepos extends Component {
             userreposAll = data.gitHub.user.repositories.nodes.map(e => {
               return e.nameWithOwner;
             });
-            console.log(
-              data.gitHub.user.repositories.nodes.map(e => {
-                return e.nameWithOwner;
-              })
-            );
           }
           return (
             <div className="autoInput">
@@ -314,7 +309,7 @@ class Repo extends Component {
         <div className="container repo-data">
           <div className="row">
             <div className="col-md-6 userinfo">
-              <img src={this.props.avatarUrl} />
+              <img src={this.props.avatarUrl} alt="user avatar" />
               <div className="username">
                 {this.props.login} <br />
                 <span>{this.props.company} </span>
@@ -342,7 +337,7 @@ class Repo extends Component {
                         className="fas fa-times"
                         onClick={() => this.handleClickDelete(e)}
                       />{" "}
-                      <img src={repoicon} /> {e}
+                      <img src={repoicon} alt="repoIcon" /> {e}
                     </li>
                   );
                 })}
@@ -406,7 +401,10 @@ class GithubInfoUser extends Component {
                 href={idx(data, _ => _.gitHub.user.url)}
                 className="user-image"
               >
-                {" "}<img src={idx(data, _ => _.gitHub.user.avatarUrl)} />
+                {" "}<img
+                  src={idx(data, _ => _.gitHub.user.avatarUrl)}
+                  alt="user avatar"
+                />
               </a>
               <div className="user-detail">
                 <h4>
@@ -466,10 +464,13 @@ class RepoId extends Component {
           if (loading) return <div>Loading...</div>;
           if (error) {
             console.log(error);
-            return <div>Uh oh, something went wrong!</div>;
+            return (
+              <div>
+                <i className="fas fa-exclamation-triangle" /> Could not find
+                repo "{this.props.repoOwner}/{this.props.repoName}"
+              </div>
+            );
           }
-          console.log(this.props.repoName);
-          console.log(data.gitHub.repository.id);
           return (
             <div>
               <input
@@ -483,7 +484,7 @@ class RepoId extends Component {
               />
               <ApolloProvider client={client}>
                 <ADDStar
-                  reponame={this.props.reponame}
+                  reponame={this.props.repo}
                   stared={data.gitHub.repository.viewerHasStarred}
                 />
               </ApolloProvider>
@@ -533,12 +534,10 @@ class ADDStar extends Component {
       <Mutation mutation={action}>
         {(handleClick, { data }) =>
           <li key={this.props.reponame}>
-            {this.state.stared ? 1 : 0}
             <i
               className={"fas fa-star " + (this.state.stared ? "active" : "")}
               onClick={e => {
                 e.preventDefault();
-                console.log("clicked");
                 this.handleClicktoggle();
                 handleClick({
                   variables: {
@@ -596,8 +595,6 @@ class AppGetStar extends Component {
     }
   }
   handleStar(repo, value) {
-    console.log(repo.split("/"));
-    console.log(value);
     this.props
       .mutate({
         variables: { repoFullName: "apollographql/apollo-client" }
@@ -637,9 +634,9 @@ class AppGetStar extends Component {
               <ul>
                 {params.repos.map(e => {
                   return (
-                    <ApolloProvider client={client}>
+                    <ApolloProvider client={client} key={e}>
                       <RepoId
-                        reponame={e}
+                        repo={e}
                         repoName={e.split("/")[1]}
                         repoOwner={e.split("/")[0]}
                       />
