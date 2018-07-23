@@ -265,7 +265,9 @@ class Repo extends Component {
     //Need to check if the repo name is valid!
     if (input.match(/[a-zA-Z]/)) {
       const repolist = this.state.repos.slice();
-      repolist.push(input);
+      if (!repolist.includes(input)) {
+        repolist.push(input);
+      }
       this.setState({
         repos: repolist
       });
@@ -332,7 +334,7 @@ class Repo extends Component {
               <ul>
                 {this.state.repos.map(e => {
                   return (
-                    <li key={e}>
+                    <li key={e} id={e}>
                       <i
                         className="fas fa-times"
                         onClick={() => this.handleClickDelete(e)}
