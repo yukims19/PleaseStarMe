@@ -91,7 +91,6 @@
   margin: auto;
   margin-top: 10px;
   margin-bottom: 80px;
-  width: 400px;
   text-align: left;
 }
 .added-repo ul {
@@ -102,6 +101,13 @@
 }
 .added-repo i {
   color: #e2e2e2;
+}
+.added-repo p {
+  text-align: center;
+  font-size: 1rem;
+}
+.added-repo p .fa-heart {
+  color: red;
 }
 .added-repo .fa-exclamation-triangle {
   color: #ffe125;
@@ -137,6 +143,58 @@
 }
 .github-userinfo .user-detail {
   text-align: left;
+}
+.github-repos {
+  display: flex;
+  justify-content: center;
+}
+.github-repos .star-data {
+  width: 360px;
+  margin: 10px;
+}
+.github-repos .card {
+  text-align: left;
+  max-width: 360px;
+  height: 170px;
+  margin: 10px 0px 10px 0px;
+}
+.github-repos .star-action {
+  /*
+  border: 1px solid #cfcfcf;
+  /* color: black;
+  width: 81px;
+  background-color: #eff3f6;
+  border-radius: 5px;
+  padding: 5px;
+ */
+  border: 1px solid #cfcfcf;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  //font-size: 3.5rem;
+}
+.github-repos .star-action i {
+  color: black;
+}
+.github-repos .card h5 a {
+  color: #0366d6;
+}
+.github-repos .card h5 a:hover {
+  text-decoration: underline;
+}
+.github-repos .card-text {
+  max-height: 60px;
+  overflow: hidden;
+}
+.github-repos .card-bottom {
+  position: absolute;
+  bottom: 5px;
+  margin-bottom: 0px;
+}
+.github-repos .card-bottom p {
+  display: inline-block;
+  margin-right: 10px;
 }
 /*Buttons*/
 .loginbtn {

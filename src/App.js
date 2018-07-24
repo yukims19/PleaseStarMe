@@ -489,6 +489,24 @@ const GET_RepoId = gql`
       repository(name: $repoName, owner: $repoOwner) {
         id
         viewerHasStarred
+        name
+        url
+        description
+        stargazers {
+          totalCount
+        }
+        forks {
+          totalCount
+        }
+        languages(first: 1, orderBy: { field: SIZE, direction: DESC }) {
+          edges {
+            node {
+              color
+              name
+              id
+            }
+          }
+        }
       }
     }
   }
@@ -517,21 +535,60 @@ class RepoId extends Component {
           }
           return (
             <div className="star-data">
-              <input
-                id={this.props.repoName}
-                type="hidden"
-                value={
-                  data.gitHub.repository.id +
-                  "/" +
-                  data.gitHub.repository.viewerHasStarred
-                }
-              />
-              <ApolloProvider client={client}>
-                <ADDStar
-                  reponame={this.props.repo}
-                  stared={data.gitHub.repository.viewerHasStarred}
+              <div className="card">
+                <input
+                  id={this.props.repoName}
+                  type="hidden"
+                  value={
+                    data.gitHub.repository.id +
+                    "/" +
+                    data.gitHub.repository.viewerHasStarred
+                  }
                 />
-              </ApolloProvider>
+                <ApolloProvider client={client}>
+                  <ADDStar
+                    reponame={this.props.repo}
+                    stared={data.gitHub.repository.viewerHasStarred}
+                  />
+                </ApolloProvider>
+                <div className="card-body">
+                  <h5 className="card-title">
+                    <a href={data.gitHub.repository.url}>
+                      {data.gitHub.repository.name}
+                    </a>
+                  </h5>
+                  <p className="card-text">
+                    {data.gitHub.repository.description}
+                  </p>
+                  <div className="card-bottom">
+                    {data.gitHub.repository.languages.edges[0]
+                      ? <p>
+                          <i
+                            className="fas fa-circle"
+                            style={{
+                              color:
+                                data.gitHub.repository.languages.edges[0].node
+                                  .color
+                            }}
+                          />
+                          {data.gitHub.repository.languages.edges[0].node.name}
+                        </p>
+                      : " "}
+                    {data.gitHub.repository.stargazers
+                      ? <p>
+                          <i className="fas fa-star" />
+                          {data.gitHub.repository.stargazers.totalCount}
+                        </p>
+                      : " "}
+                    {data.gitHub.repository.forks
+                      ? <p>
+                          <i className="fas fa-code-branch" />
+                          {data.gitHub.repository.forks.totalCount}
+                        </p>
+                      : " "}
+                  </div>
+                </div>
+              </div>
             </div>
           );
         }}
@@ -577,25 +634,26 @@ class ADDStar extends Component {
     return (
       <Mutation mutation={action}>
         {(handleClick, { data }) =>
-          <li key={this.props.reponame}>
+          <button
+            className="btn btn-light star-action"
+            key={this.props.reponame}
+            onClick={e => {
+              e.preventDefault();
+              this.handleClicktoggle();
+              handleClick({
+                variables: {
+                  id: document.getElementById(this.props.reponame.split("/")[1])
+                    .value,
+                  repoName: this.props.reponame
+                }
+              });
+            }}
+          >
             <i
               className={"fas fa-star " + (this.state.stared ? "active" : "")}
-              onClick={e => {
-                e.preventDefault();
-                this.handleClicktoggle();
-                handleClick({
-                  variables: {
-                    id: document.getElementById(
-                      this.props.reponame.split("/")[1]
-                    ).value,
-                    repoName: this.props.reponame
-                  }
-                });
-              }}
             />{" "}
-            {/*<img src={repoicon} /> */}
-            {this.props.reponame}
-          </li>}
+            {this.state.stared ? "Unstar" : "Star"}
+          </button>}
       </Mutation>
     );
   }
@@ -699,9 +757,10 @@ class AppGetStar extends Component {
             </ApolloProvider>
             <div className="added-repo">
               <p>
-                {params.githubUser} wants your GitHub love on the repos:
+                {params.githubUser} wants your GitHub{" "}
+                <i className="fas fa-heart" /> on the repos:
               </p>
-              <ul>
+              <div className="row github-repos">
                 {params.repos.map(e => {
                   return (
                     <ApolloProvider client={client} key={e}>
@@ -713,7 +772,7 @@ class AppGetStar extends Component {
                     </ApolloProvider>
                   );
                 })}
-              </ul>
+              </div>
             </div>
           </div>
         );
