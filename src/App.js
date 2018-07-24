@@ -82,7 +82,7 @@ class RepoInput extends Component {
   };
 
   keyPress = e => {
-    if (e.keyCode == 13) {
+    if (e.keyCode === 13) {
       this.props.clickAdd(this.state.value);
     }
   };
@@ -188,8 +188,12 @@ class GithubLoginUser extends Component {
           return (
             <div>
               <div className="login-user">
-                <img src={idx(data, _ => _.me.github.avatarUrl)} />
-                <a href="https://www.pleasestarme.com" target="_blank">
+                <img src={idx(data, _ => _.me.github.avatarUrl)} alt="Avatar" />
+                <a
+                  href="https://www.pleasestarme.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <button className="btn btn-primary">
                     Get stars for your repos!
                   </button>
