@@ -41,6 +41,9 @@
 .login-content {
   margin-top: 50px;
 }
+.login-content .fa-heart {
+  color: red;
+}
 .link .btn {
   background-color: #40b9ed;
   border-color: #40b9ed;

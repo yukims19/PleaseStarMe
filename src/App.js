@@ -654,7 +654,17 @@ class AppGetStar extends Component {
     if (URL.includes("?githubUser=")) {
       return (
         <div className="login-content">
-          <h4>Let's Share Your GitHub Love!</h4>
+          <h4>
+            Let's Share Your GitHub Love <i className="fas fa-heart" />
+          </h4>
+          <h5>
+            <strong>
+              <i>
+                {params.githubUser}
+              </i>
+            </strong>{" "}
+            wants you to checkout some really cool projects!
+          </h5>
           <LoginButton
             event={eventTitle}
             eventClass={eventClass}
