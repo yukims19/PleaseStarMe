@@ -29,6 +29,3 @@ yarn start
 
 ![Example results](imgs/example1.png)
 ![Example results](imgs/example2.png)
-![Example results](imgs/example3.png)
-![Example results](imgs/example4.png)
-![Example results](imgs/example5.png)
