@@ -5,6 +5,7 @@
   border: 1px solid;
   background-image: url("./img/header-background.jpg");
   background-size: cover;
+  width: 100%;
 }
 .header h1 {
   padding: 20px;
@@ -13,10 +14,21 @@
 .header h1 i {
   color: yellow;
 }
+.login-user {
+  text-align: right;
+  padding-right: 50px;
+}
+
+.login-user img {
+  width: 60px;
+  border-radius: 50%;
+  margin: 10px;
+}
 .card-footer {
   position: fixed;
   bottom: 0px;
   width: 100%;
+  background-color: #f7f7f7;
 }
 .card-footer i {
   color: red;
@@ -46,10 +58,14 @@
   margin-bottom: 80px;
   width: 85%;
 }
+
 .repo-input,
 .repo-data {
   width: 70%;
   margin: auto;
+}
+.repo-input {
+  width: 660px;
 }
 .repo-data {
   margin-top: 30px;
@@ -66,6 +82,7 @@
 .added-repo {
   margin: auto;
   margin-top: 10px;
+  margin-bottom: 80px;
   width: 400px;
   text-align: left;
 }
@@ -73,6 +90,19 @@
   list-style-type: none;
   font-size: 1.3rem;
   padding: 0px;
+  white-space: nowrap;
+}
+.added-repo i {
+  color: #e2e2e2;
+}
+.added-repo .fa-exclamation-triangle {
+  color: #ffe125;
+}
+.added-repo .fa-exclamation-triangle:hover {
+  cursor: auto;
+}
+.added-repo .active {
+  color: yellow;
 }
 .added-repo img {
   height: 14px;
@@ -81,15 +111,23 @@
 .added-repo i:hover {
   cursor: pointer;
 }
-#button-addon2 {
-  //background-color: #40B9ED;
+.github-userinfo {
+  margin-top: 50px;
 }
-
-.github-userinfo .col-md-2 img {
-  width: 100%;
+.github-userinfo a.user-image {
+  top: -55px;
+  position: relative;
+}
+.github-userinfo img {
+  width: 120px;
   border-radius: 5px;
+  margin-right: 10px;
 }
-.github-userinfo .user-info {
+.github-userinfo .user-detail,
+.github-userinfo .user-image {
+  display: inline-block;
+}
+.github-userinfo .user-detail {
   text-align: left;
 }
 /*Buttons*/
@@ -111,4 +149,117 @@
 }
 .loginbtn-github:hover {
   background: rgb(85, 85, 85);
+}
+
+/*Auto Suggest style*/
+.autoInput {
+  width: 70%;
+}
+.react-autosuggest__container {
+  position: relative;
+}
+
+.react-autosuggest__input {
+  width: 100%;
+  //height: 30px;
+  padding: 10px 20px;
+  font-family: Helvetica, sans-serif;
+  font-weight: 300;
+  font-size: 1rem;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  padding: .375rem .75rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.react-autosuggest__input--focused {
+  outline: none;
+}
+
+.react-autosuggest__input--open {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.react-autosuggest__suggestions-container {
+  display: none;
+}
+
+.react-autosuggest__suggestions-container--open {
+  display: block;
+  position: absolute;
+  //top: 51px;
+  width: 100%;
+  border: 1px solid #aaa;
+  background-color: #fff;
+  font-family: Helvetica, sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  z-index: 2;
+  left: 50%;
+  transform: translate(-50%, 0);
+  text-align: left;
+}
+
+.react-autosuggest__suggestions-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  max-height: 200px;
+  overflow: scroll;
+}
+
+.react-autosuggest__suggestion {
+  cursor: pointer;
+  padding: 10px 20px;
+}
+
+.react-autosuggest__suggestion--highlighted {
+  background-color: #ddd;
+}
+
+@media screen and (max-width: 768px) {
+  .header h1 {
+    font-size: 1.8rem;
+  }
+  .repo {
+    width: 100%;
+  }
+  .repo-input {
+    width: 320px;
+  }
+  .autoInput {
+    width: 280px;
+  }
+  .input-group-append #button-addon2 {
+    width: 40px;
+    padding-left: 7px;
+    overflow: hidden;
+  }
+  .repo-data {
+    width: 100%;
+  }
+  .added-repo {
+    width: 100%;
+  }
+  .added-repo p {
+    padding: 5px;
+    text-align: center;
+  }
+  .added-repo ul {
+    white-space: normal;
+    font-size: 1rem;
+  }
+  .star-data {
+    padding: 10px;
+    margin-left: 30px;
+  }
 }
