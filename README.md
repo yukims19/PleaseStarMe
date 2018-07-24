@@ -14,7 +14,7 @@ Sign up at https://www.onegraph.com, create an app, and grab its id.
 
 Open `src/App.js` and put the APP_ID in there.
 
-*Remember to add chrome-extension://<extension-ID> to your app's CORS origins.
+*Remember to add localhost to your app's CORS origins.
 
 ### Run the command:
 
