@@ -758,7 +758,7 @@ class AppGetStar extends Component {
             <div className="added-repo">
               <p>
                 {params.githubUser} wants your GitHub{" "}
-                <i className="fas fa-heart" /> on the repos:
+                <i className="fas fa-heart" /> on these cool projects:
               </p>
               <div className="row github-repos">
                 {params.repos.map(e => {
