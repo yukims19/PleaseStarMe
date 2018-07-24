@@ -82,9 +82,7 @@ class RepoInput extends Component {
   };
 
   keyPress = e => {
-    console.log(e);
     if (e.keyCode == 13) {
-      console.log(e.keyCode);
       this.props.clickAdd(this.state.value);
     }
   };
@@ -169,6 +167,33 @@ class GithubInfo extends Component {
                   websiteUrl={idx(data, _ => _.me.github.websiteUrl)}
                   name={idx(data, _ => _.me.github.name)}
                 />
+              </div>
+            </div>
+          );
+        }}
+      </Query>
+    );
+  }
+}
+class GithubLoginUser extends Component {
+  render() {
+    return (
+      <Query query={GET_GithubQuery}>
+        {({ loading, error, data }) => {
+          if (loading) return <div>Loading...</div>;
+          if (error) {
+            console.log(error);
+            return <div>Uh oh, something went wrong!</div>;
+          }
+          return (
+            <div>
+              <div className="login-user">
+                <img src={idx(data, _ => _.me.github.avatarUrl)} />
+                <a href="https://www.pleasestarme.com" target="_blank">
+                  <button className="btn btn-primary">
+                    Get stars for your repos!
+                  </button>
+                </a>
               </div>
             </div>
           );
@@ -621,16 +646,29 @@ class AppGetStar extends Component {
       });
   }
   renderLogin(eventTitle, eventClass) {
-    return (
-      <div className="login-content">
-        <h4>Let's get starts for your repos!</h4>
-        <LoginButton
-          event={eventTitle}
-          eventClass={eventClass}
-          onClick={() => this.handleClick(eventClass)}
-        />
-      </div>
-    );
+    if (URL.includes("?githubUser=")) {
+      return (
+        <div className="login-content">
+          <h4>Let's Share Your GitHub Love!</h4>
+          <LoginButton
+            event={eventTitle}
+            eventClass={eventClass}
+            onClick={() => this.handleClick(eventClass)}
+          />
+        </div>
+      );
+    } else {
+      return (
+        <div className="login-content">
+          <h4>Let's get starts for your repos!</h4>
+          <LoginButton
+            event={eventTitle}
+            eventClass={eventClass}
+            onClick={() => this.handleClick(eventClass)}
+          />
+        </div>
+      );
+    }
   }
   render() {
     var content;
@@ -638,6 +676,9 @@ class AppGetStar extends Component {
       if (URL.includes("?githubUser=")) {
         content = (
           <div>
+            <ApolloProvider client={client}>
+              <GithubLoginUser />
+            </ApolloProvider>
             <ApolloProvider client={client}>
               <GithubInfoUser />
             </ApolloProvider>

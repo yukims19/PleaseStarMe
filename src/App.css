@@ -14,6 +14,16 @@
 .header h1 i {
   color: yellow;
 }
+.login-user {
+  text-align: right;
+  padding-right: 50px;
+}
+
+.login-user img {
+  width: 60px;
+  border-radius: 50%;
+  margin: 10px;
+}
 .card-footer {
   position: fixed;
   bottom: 0px;
