@@ -272,7 +272,7 @@ class Link extends Component {
           className="form-control"
           id="url-params"
           value={
-            "https://pleasestarme.com/?githubUser=" +
+            "https://www.pleasestarme.com/?githubUser=" +
             this.props.user +
             "&repos=" +
             repos
