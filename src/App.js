@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import repoicon from "./img/repo.png";
+import logo from "./img/logo.png";
 import "./App.css";
 import OneGraphApolloClient from "onegraph-apollo-client";
 import OneGraphAuth from "onegraph-auth";
@@ -722,7 +723,10 @@ class AppGetStar extends Component {
       <div className="App">
         <div className="header">
           <h1>
-            <i className="fas fa-star" /> PleaseStarMe - Share Your GitHub Love!
+            <i>
+              {" "}<img src={logo} alt="Logo" id="logo" />
+            </i>{" "}
+            PleaseStarMe - Share Your GitHub Love!
           </h1>
         </div>
         {content}
