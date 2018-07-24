@@ -81,6 +81,14 @@ class RepoInput extends Component {
     });
   };
 
+  keyPress = e => {
+    console.log(e);
+    if (e.keyCode == 13) {
+      console.log(e.keyCode);
+      this.props.clickAdd(this.state.value);
+    }
+  };
+
   // Autosuggest will call this function every time you need to update suggestions.
   // You already implemented this logic above, so just use it.
   onSuggestionsFetchRequested = ({ value }) => {
@@ -104,7 +112,8 @@ class RepoInput extends Component {
       placeholder: "ex. Organization/RepoName",
       value,
       onChange: this.onChange,
-      id: "repo-userinput"
+      id: "repo-userinput",
+      onKeyDown: this.keyPress
     };
 
     // Finally, render it!
@@ -201,7 +210,7 @@ class MyGithubRepos extends Component {
           }
           return (
             <div className="autoInput">
-              <RepoInput />
+              <RepoInput clickAdd={this.props.clickAdd} />
             </div>
           );
         }}
@@ -292,7 +301,10 @@ class Repo extends Component {
     return (
       <div className="repo">
         <div className="input-group repo-input">
-          <MyGithubRepos login={this.props.login} />
+          <MyGithubRepos
+            login={this.props.login}
+            clickAdd={this.handleClickAdd.bind(this)}
+          />
 
           <div className="input-group-append">
             <button
