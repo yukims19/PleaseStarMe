@@ -35,8 +35,10 @@ if (URL.includes("/?")) {
     ? decodeURIComponent(URL.split("?")[1]).split("&")
     : "";
 
-  if (urlparams[2][urlparams[2].length - 1] === "+") {
-    urlparams[2] = urlparams[2].slice(0, urlparams[2].length - 1);
+  if (urlparams[2]) {
+    if (urlparams[2][urlparams[2].length - 1] === "+") {
+      urlparams[2] = urlparams[2].slice(0, urlparams[2].length - 1);
+    }
   }
 
   if (urlparams) {
@@ -741,13 +743,15 @@ class AppGetStar extends Component {
           </h4>
           <br />
           <h5>
-            <i>
-              <img
-                id="user-avatar-logout"
-                src={params.avatarUrl}
-                alt="Avatar"
-              />
-            </i>
+            {params.avatarUrl
+              ? <i>
+                  <img
+                    id="user-avatar-logout"
+                    src={params.avatarUrl}
+                    alt="Avatar"
+                  />
+                </i>
+              : ""}
             <strong>
               <i>
                 {params.githubUser}
