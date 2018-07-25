@@ -741,6 +741,13 @@ class AppGetStar extends Component {
           </h4>
           <br />
           <h5>
+            <i>
+              <img
+                id="user-avatar-logout"
+                src={params.avatarUrl}
+                alt="Avatar"
+              />
+            </i>
             <strong>
               <i>
                 {params.githubUser}

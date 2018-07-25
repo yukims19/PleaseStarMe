@@ -38,6 +38,10 @@
 .card-footer i {
   color: red;
 }
+#user-avatar-logout {
+  height: 70px;
+  border-radius: 50%;
+}
 .login-content {
   margin-top: 50px;
 }
