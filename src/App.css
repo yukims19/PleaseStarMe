@@ -41,6 +41,12 @@
 .login-content {
   margin-top: 50px;
 }
+.login-content ul {
+  width: 50%;
+  position: relative;
+  left: 40%;
+  text-align: left;
+}
 .login-content .fa-heart {
   color: red;
 }
@@ -93,7 +99,8 @@
   margin-bottom: 80px;
   text-align: left;
 }
-.added-repo ul {
+.added-repo ul,
+.login-content ul {
   list-style-type: none;
   font-size: 1.3rem;
   padding: 0px;
@@ -118,7 +125,8 @@
 .added-repo .active {
   color: yellow;
 }
-.added-repo img {
+.added-repo img,
+.login-content img {
   height: 14px;
   margin-left: 20px;
 }
@@ -196,6 +204,12 @@
   display: inline-block;
   margin-right: 10px;
   font-size: 0.9rem;
+}
+.github-repos .invalid-repo-card-body {
+  display: flex;
+}
+.github-repos .invalid-repo {
+  align-self: center;
 }
 /*Buttons*/
 .loginbtn {
