@@ -21,28 +21,38 @@ const client = new OneGraphApolloClient({
 
 let URL = window.location.href; //http://localhost:3000/?githubUser=yuki19&repos=yukims19/OneProfile;
 //  "http://localhost:3000/?githubUser=yukims19&repos=yukims19/OneProfile+yukims19/PleaseStarMe"
-
-if (URL[URL.length - 1] === "+") {
-  URL = URL.slice(0, URL.length - 1);
-}
-const urlparams = URL.includes("?") ? URL.split("?")[1].split("&") : "";
+let urlparams;
 let params = {
   githubUser: null,
   repos: []
 };
-if (urlparams) {
-  urlparams.forEach(e => {
-    if (e.includes("=")) {
-      if (e.includes("repos")) {
-        params[e.split("=")[0]].push.apply(
-          params[e.split("=")[0]],
-          e.split("=")[1].split("+")
-        );
-      } else {
-        params[e.split("=")[0]] = e.split("=")[1];
+
+if (URL.includes("/?")) {
+  if (URL[URL.length - 1] === "+") {
+    URL = URL.slice(0, URL.length - 1);
+  }
+  urlparams = URL.includes("?")
+    ? decodeURIComponent(URL.split("?")[1]).split("&")
+    : "";
+
+  if (urlparams[2][urlparams[2].length - 1] === "+") {
+    urlparams[2] = urlparams[2].slice(0, urlparams[2].length - 1);
+  }
+
+  if (urlparams) {
+    urlparams.forEach(e => {
+      if (e.includes("=")) {
+        if (e.includes("repos")) {
+          params[e.split("=")[0]].push.apply(
+            params[e.split("=")[0]],
+            e.split("=")[1].split("+")
+          );
+        } else {
+          params[e.split("=")[0]] = e.split("=")[1];
+        }
       }
-    }
-  });
+    });
+  }
 }
 
 let userreposAll = [];
@@ -55,7 +65,6 @@ const getSuggestions = value => {
         repo => repo.toLowerCase().slice(0, inputLength) === inputValue
       );
 };
-
 // When suggestion is clicked, Autosuggest needs to populate the input
 // based on the clicked suggestion. Teach Autosuggest how to calculate the
 // input value for every given suggestion.
@@ -274,9 +283,13 @@ class Link extends Component {
           id="url-params"
           value={
             "https://www.pleasestarme.com/?githubUser=" +
-            this.props.user +
-            "&repos=" +
-            repos
+            encodeURIComponent(
+              this.props.user +
+                "&avatarUrl=" +
+                encodeURI(this.props.avatarUrl) +
+                "&repos=" +
+                repos
+            )
           }
           readOnly
         />
@@ -370,7 +383,11 @@ class Repo extends Component {
                 <i className="fas fa-globe" />{" "}
                 <a href={this.props.websiteUrl}>{this.props.websiteUrl}</a>
               </p>
-              <Link repos={this.state.repos} user={this.props.login} />
+              <Link
+                repos={this.state.repos}
+                user={this.props.login}
+                avatarUrl={this.props.avatarUrl}
+              />
             </div>
             <div className="col-md-6 added-repo">
               <ul>
@@ -402,7 +419,7 @@ class LoginButton extends Component {
         onClick={this.props.onClick}
       >
         <i className={"fab fa-" + this.props.eventClass} />
-        <span> </span>Login with {this.props.event}
+        <span> </span>Login with {this.props.event} to See More
       </button>
     );
   }
@@ -489,6 +506,24 @@ const GET_RepoId = gql`
       repository(name: $repoName, owner: $repoOwner) {
         id
         viewerHasStarred
+        name
+        url
+        description
+        stargazers {
+          totalCount
+        }
+        forks {
+          totalCount
+        }
+        languages(first: 1, orderBy: { field: SIZE, direction: DESC }) {
+          edges {
+            node {
+              color
+              name
+              id
+            }
+          }
+        }
       }
     }
   }
@@ -510,28 +545,73 @@ class RepoId extends Component {
             console.log(error);
             return (
               <div className="star-data">
-                <i className="fas fa-exclamation-triangle" /> Could not find
-                repo "{this.props.repoOwner}/{this.props.repoName}"
+                <div className="card">
+                  <div className="card-body invalid-repo-card-body">
+                    <div className="invalid-repo">
+                      <i className="fas fa-exclamation-triangle" /> Could not
+                      find repo "{this.props.repoOwner}/{this.props.repoName}"
+                    </div>
+                  </div>
+                </div>
               </div>
             );
           }
           return (
             <div className="star-data">
-              <input
-                id={this.props.repoName}
-                type="hidden"
-                value={
-                  data.gitHub.repository.id +
-                  "/" +
-                  data.gitHub.repository.viewerHasStarred
-                }
-              />
-              <ApolloProvider client={client}>
-                <ADDStar
-                  reponame={this.props.repo}
-                  stared={data.gitHub.repository.viewerHasStarred}
+              <div className="card">
+                <input
+                  id={this.props.repoName}
+                  type="hidden"
+                  value={
+                    data.gitHub.repository.id +
+                    "/" +
+                    data.gitHub.repository.viewerHasStarred
+                  }
                 />
-              </ApolloProvider>
+                <ApolloProvider client={client}>
+                  <ADDStar
+                    reponame={this.props.repo}
+                    stared={data.gitHub.repository.viewerHasStarred}
+                  />
+                </ApolloProvider>
+                <div className="card-body">
+                  <h5 className="card-title">
+                    <a href={data.gitHub.repository.url}>
+                      {data.gitHub.repository.name}
+                    </a>
+                  </h5>
+                  <p className="card-text">
+                    {data.gitHub.repository.description}
+                  </p>
+                  <div className="card-bottom">
+                    {data.gitHub.repository.languages.edges[0]
+                      ? <p>
+                          <i
+                            className="fas fa-circle"
+                            style={{
+                              color:
+                                data.gitHub.repository.languages.edges[0].node
+                                  .color
+                            }}
+                          />
+                          {data.gitHub.repository.languages.edges[0].node.name}
+                        </p>
+                      : " "}
+                    {data.gitHub.repository.stargazers
+                      ? <p>
+                          <i className="fas fa-star" />
+                          {data.gitHub.repository.stargazers.totalCount}
+                        </p>
+                      : " "}
+                    {data.gitHub.repository.forks
+                      ? <p>
+                          <i className="fas fa-code-branch" />
+                          {data.gitHub.repository.forks.totalCount}
+                        </p>
+                      : " "}
+                  </div>
+                </div>
+              </div>
             </div>
           );
         }}
@@ -577,25 +657,26 @@ class ADDStar extends Component {
     return (
       <Mutation mutation={action}>
         {(handleClick, { data }) =>
-          <li key={this.props.reponame}>
+          <button
+            className="btn btn-light star-action"
+            key={this.props.reponame}
+            onClick={e => {
+              e.preventDefault();
+              this.handleClicktoggle();
+              handleClick({
+                variables: {
+                  id: document.getElementById(this.props.reponame.split("/")[1])
+                    .value,
+                  repoName: this.props.reponame
+                }
+              });
+            }}
+          >
             <i
               className={"fas fa-star " + (this.state.stared ? "active" : "")}
-              onClick={e => {
-                e.preventDefault();
-                this.handleClicktoggle();
-                handleClick({
-                  variables: {
-                    id: document.getElementById(
-                      this.props.reponame.split("/")[1]
-                    ).value,
-                    repoName: this.props.reponame
-                  }
-                });
-              }}
             />{" "}
-            {/*<img src={repoicon} /> */}
-            {this.props.reponame}
-          </li>}
+            {this.state.stared ? "Unstar" : "Star"}
+          </button>}
       </Mutation>
     );
   }
@@ -651,13 +732,22 @@ class AppGetStar extends Component {
       });
   }
   renderLogin(eventTitle, eventClass) {
+    //onClick={() => this.handleClickDelete(e)}
     if (URL.includes("?githubUser=")) {
       return (
         <div className="login-content">
           <h4>
             Let's Share Your GitHub Love <i className="fas fa-heart" />
           </h4>
+          <br />
           <h5>
+            <i>
+              <img
+                id="user-avatar-logout"
+                src={params.avatarUrl}
+                alt="Avatar"
+              />
+            </i>
             <strong>
               <i>
                 {params.githubUser}
@@ -665,6 +755,15 @@ class AppGetStar extends Component {
             </strong>{" "}
             wants you to checkout some really cool projects!
           </h5>
+          <ul>
+            {params.repos.map(e => {
+              return (
+                <li key={e} id={e}>
+                  <img src={repoicon} alt="repoIcon" /> {e}
+                </li>
+              );
+            })}
+          </ul>
           <LoginButton
             event={eventTitle}
             eventClass={eventClass}
@@ -699,9 +798,10 @@ class AppGetStar extends Component {
             </ApolloProvider>
             <div className="added-repo">
               <p>
-                {params.githubUser} wants your GitHub love on the repos:
+                {params.githubUser} wants your GitHub{" "}
+                <i className="fas fa-heart" /> on these cool projects:
               </p>
-              <ul>
+              <div className="row github-repos">
                 {params.repos.map(e => {
                   return (
                     <ApolloProvider client={client} key={e}>
@@ -713,7 +813,7 @@ class AppGetStar extends Component {
                     </ApolloProvider>
                   );
                 })}
-              </ul>
+              </div>
             </div>
           </div>
         );
