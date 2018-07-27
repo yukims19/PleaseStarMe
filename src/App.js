@@ -464,7 +464,8 @@ class GithubInfoUser extends Component {
                 href={idx(data, _ => _.gitHub.user.url)}
                 className="user-image"
               >
-                {" "}<img
+                {""}
+                <img
                   src={idx(data, _ => _.gitHub.user.avatarUrl)}
                   alt="user avatar"
                 />
@@ -474,7 +475,7 @@ class GithubInfoUser extends Component {
                   <a href={idx(data, _ => _.gitHub.user.url)}>
                     {idx(data, _ => _.gitHub.user.login)}
                   </a>{" "}
-                  ({idx(data, _ => _.gitHub.user.name)})
+                  {/*idx(data, _ => _.gitHub.user.name)*/}
                 </h4>
                 <small>
                   <cite title={this.props.location}>
