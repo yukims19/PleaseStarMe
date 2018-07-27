@@ -76,7 +76,11 @@
   margin-bottom: 80px;
   width: 85%;
 }
-
+.repo-data {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 .repo-input,
 .repo-data {
   width: 70%;

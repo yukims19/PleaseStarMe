@@ -366,46 +366,44 @@ class Repo extends Component {
           </div>
         </div>
         <div className="container repo-data">
-          <div className="row">
-            <div className="col-md-6 userinfo">
-              <img src={this.props.avatarUrl} alt="user avatar" />
-              <div className="username">
-                {this.props.login} <br />
-                <span>{this.props.company} </span>
-              </div>
+          <div className="userinfo">
+            <img src={this.props.avatarUrl} alt="user avatar" />
+            <div className="username">
+              {this.props.login} <br />
+              <span>{this.props.company} </span>
+            </div>
+            <br />
+            <small>
+              <cite title={this.props.location}>
+                {this.props.location} <i className="fas fa-map-marker-alt" />
+              </cite>
+            </small>
+            <p className="info-list">
+              <i className="fas fa-envelope" /> {this.props.email}
               <br />
-              <small>
-                <cite title={this.props.location}>
-                  {this.props.location} <i className="fas fa-map-marker-alt" />
-                </cite>
-              </small>
-              <p className="info-list">
-                <i className="fas fa-envelope" /> {this.props.email}
-                <br />
-                <i className="fas fa-globe" />{" "}
-                <a href={this.props.websiteUrl}>{this.props.websiteUrl}</a>
-              </p>
-              <Link
-                repos={this.state.repos}
-                user={this.props.login}
-                avatarUrl={this.props.avatarUrl}
-              />
-            </div>
-            <div className="col-md-6 added-repo">
-              <ul>
-                {this.state.repos.map(e => {
-                  return (
-                    <li key={e} id={e}>
-                      <i
-                        className="fas fa-times"
-                        onClick={() => this.handleClickDelete(e)}
-                      />{" "}
-                      <img src={repoicon} alt="repoIcon" /> {e}
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
+              <i className="fas fa-globe" />{" "}
+              <a href={this.props.websiteUrl}>{this.props.websiteUrl}</a>
+            </p>
+            <Link
+              repos={this.state.repos}
+              user={this.props.login}
+              avatarUrl={this.props.avatarUrl}
+            />
+          </div>
+          <div className="added-repo">
+            <ul>
+              {this.state.repos.map(e => {
+                return (
+                  <li key={e} id={e}>
+                    <i
+                      className="fas fa-times"
+                      onClick={() => this.handleClickDelete(e)}
+                    />{" "}
+                    <img src={repoicon} alt="repoIcon" /> {e}
+                  </li>
+                );
+              })}
+            </ul>
           </div>
         </div>
       </div>
