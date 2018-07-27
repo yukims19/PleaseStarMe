@@ -206,9 +206,7 @@ class GithubLoginUser extends Component {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <button className="btn btn-primary">
-                    Get stars for your repos!
-                  </button>
+                  <button className="btn btn-primary">Your Link</button>
                 </a>
               </div>
             </div>
@@ -799,11 +797,11 @@ class AppGetStar extends Component {
             <ApolloProvider client={client}>
               <GithubInfoUser />
             </ApolloProvider>
+            <p>
+              {params.githubUser} wants your GitHub{" "}
+              <i className="fas fa-heart" /> on these cool projects:
+            </p>
             <div className="added-repo">
-              <p>
-                {params.githubUser} wants your GitHub{" "}
-                <i className="fas fa-heart" /> on these cool projects:
-              </p>
               <div className="row github-repos">
                 {params.repos.map(e => {
                   return (

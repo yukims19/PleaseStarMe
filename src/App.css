@@ -54,11 +54,17 @@
 .login-content .fa-heart {
   color: red;
 }
-.link .btn {
+.link .btn,
+.login-user .btn {
   background-color: #40b9ed;
   border-color: #40b9ed;
+  font-size: 1.2rem;
 }
-.link .btn:hover {
+.login-user .btn {
+  font-size: 1rem;
+}
+.link .btn:hover,
+.login-user .btn:hover {
   background-color: #03a9f4;
 }
 .link input {
@@ -83,11 +89,10 @@
 }
 .repo-input,
 .repo-data {
-  width: 70%;
+  width: 660px;
   margin: auto;
 }
 .repo-input {
-  width: 660px;
 }
 .repo-data {
   margin-top: 30px;
@@ -96,6 +101,11 @@
 .repo .userinfo .username {
   display: inline-block;
 }
+.repo .userinfo .username {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
 .repo .userinfo img {
   width: 60px;
   border-radius: 50%;
@@ -121,7 +131,7 @@
   text-align: center;
   font-size: 1rem;
 }
-.added-repo p .fa-heart {
+.fa-heart {
   color: red;
 }
 .added-repo .fa-exclamation-triangle {
@@ -338,6 +348,8 @@
   }
   .added-repo {
     width: 100%;
+    display: flex;
+    justify-content: center;
   }
   .added-repo p {
     padding: 5px;
@@ -378,5 +390,8 @@
   }
   .github-repos {
     margin: 0px;
+  }
+  .login-user {
+    padding-right: 10px;
   }
 }
